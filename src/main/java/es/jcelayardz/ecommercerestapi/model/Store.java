@@ -2,6 +2,8 @@ package es.jcelayardz.ecommercerestapi.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "store")
 public class Store {
@@ -19,6 +21,9 @@ public class Store {
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "adminUsername", referencedColumnName = "username")
     private Admin admin;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private Set<Product> products;
 
     public Store() {
     }
@@ -59,6 +64,14 @@ public class Store {
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     @Override
