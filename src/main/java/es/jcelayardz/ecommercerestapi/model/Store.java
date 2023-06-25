@@ -26,6 +26,7 @@ public class Store {
     public Store(String name, String description) {
         this.name = name;
         this.description = description;
+        this.isVisible=true;
     }
 
     public String getName() {
