@@ -19,6 +19,9 @@ public class Admin {
     @Column(nullable = false)
     private AdminType adminType;
 
+    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL)
+    private Store store;
+
     public Admin() {
     }
 
@@ -59,6 +62,14 @@ public class Admin {
 
     public void setAdminType(AdminType adminType) {
         this.adminType = adminType;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     @Override
