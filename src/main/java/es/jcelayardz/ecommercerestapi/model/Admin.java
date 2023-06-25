@@ -1,0 +1,73 @@
+package es.jcelayardz.ecommercerestapi.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "admin")
+public class Admin {
+    @Id
+    @Column(nullable = false, unique = true, length = 25)
+    private String username;
+
+    @Column(nullable = false, unique = true, length = 50)
+    private String email;
+
+    @Column(nullable = false, length = 70)
+    private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private AdminType adminType;
+
+    public Admin() {
+    }
+
+    public Admin(String username, String email, String password, AdminType adminType) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.adminType = adminType;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public AdminType getAdminType() {
+        return adminType;
+    }
+
+    public void setAdminType(AdminType adminType) {
+        this.adminType = adminType;
+    }
+
+    @Override
+    public String toString() {
+        return "Admin = {\n" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", adminType=" + adminType +
+                "}\n";
+    }
+}
