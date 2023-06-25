@@ -3,6 +3,7 @@ package es.jcelayardz.ecommercerestapi.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -22,6 +23,9 @@ public class Customer {
     private Gender gender;
 
     private Date dateOfBirth;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Address> addresses;
 
     public Customer() {
     }
@@ -72,6 +76,14 @@ public class Customer {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override
