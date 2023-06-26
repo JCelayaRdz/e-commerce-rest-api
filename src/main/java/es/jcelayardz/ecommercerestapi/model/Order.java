@@ -22,6 +22,24 @@ public class Order {
 
     private Date deliveredAt;
 
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.DETACH
+    }, optional = false)
+    @JoinColumn(name = "customerUsername", referencedColumnName = "username")
+    private Customer customer;
+
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.DETACH
+    }, optional = false)
+    @JoinColumn(name = "addressid", referencedColumnName = "addressid")
+    private Address address;
+
     public Order() {
     }
 
@@ -61,6 +79,22 @@ public class Order {
 
     public void setDeliveredAt(Date deliveredAt) {
         this.deliveredAt = deliveredAt;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override
