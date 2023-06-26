@@ -2,6 +2,8 @@ package es.jcelayardz.ecommercerestapi.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "address")
 public class Address {
@@ -28,6 +30,9 @@ public class Address {
 
     @Column(nullable = false)
     private boolean isVisible;
+
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    private Set<Order> orders;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST,
@@ -112,6 +117,14 @@ public class Address {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
