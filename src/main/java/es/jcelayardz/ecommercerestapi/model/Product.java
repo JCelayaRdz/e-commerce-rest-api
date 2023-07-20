@@ -1,6 +1,7 @@
 package es.jcelayardz.ecommercerestapi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "product")
@@ -9,13 +10,16 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productid", nullable = false, unique = true)
+    @NotNull
     private Integer productId;
 
     @Column(nullable = false, length = 30)
+    @NotNull
     private String name;
 
     @Column(nullable = false)
-    private float price;
+    @NotNull
+    private Float price;
 
     @Column(length = 100)
     private String description;
@@ -35,7 +39,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, float price, String description) {
+    public Product(String name, Float price, String description) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -58,11 +62,11 @@ public class Product {
         this.name = name;
     }
 
-    public float getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
