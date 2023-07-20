@@ -1,11 +1,13 @@
 package es.jcelayardz.ecommercerestapi.service;
 
+import es.jcelayardz.ecommercerestapi.dto.ProductDto;
 import es.jcelayardz.ecommercerestapi.exception.ProductNotFoundException;
 import es.jcelayardz.ecommercerestapi.model.Product;
 import es.jcelayardz.ecommercerestapi.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -16,12 +18,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public Product getProductById(Integer productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
+    public List<ProductDto> getAllProducts() {
+        return productRepository.findAllVisible()
+                .stream()
+                .map(p -> p.toDto())
+                .collect(Collectors.toList());
     }
 }
