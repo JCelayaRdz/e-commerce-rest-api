@@ -42,7 +42,6 @@ public class Address {
             CascadeType.DETACH
     }, optional = false)
     @JoinColumn(name = "customerusername", referencedColumnName = "username")
-    @JsonIgnore
     private Customer customer;
 
     public Address() {

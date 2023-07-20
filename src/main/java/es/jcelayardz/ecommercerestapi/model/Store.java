@@ -21,7 +21,6 @@ public class Store {
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "adminusername", referencedColumnName = "username")
-    @JsonIgnore
     private Admin admin;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)

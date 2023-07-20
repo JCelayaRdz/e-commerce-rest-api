@@ -35,7 +35,6 @@ public class Product {
             CascadeType.DETACH
     }, optional = false)
     @JoinColumn(name = "storename", referencedColumnName = "name")
-    @JsonIgnore
     private Store store;
 
     public Product() {
