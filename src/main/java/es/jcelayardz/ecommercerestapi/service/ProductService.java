@@ -1,9 +1,12 @@
 package es.jcelayardz.ecommercerestapi.service;
 
 import es.jcelayardz.ecommercerestapi.dto.ProductDto;
+import es.jcelayardz.ecommercerestapi.exception.ProductBadRequestException;
 import es.jcelayardz.ecommercerestapi.exception.ProductNotFoundException;
 import es.jcelayardz.ecommercerestapi.model.Product;
+import es.jcelayardz.ecommercerestapi.model.Store;
 import es.jcelayardz.ecommercerestapi.repository.ProductRepository;
+import es.jcelayardz.ecommercerestapi.repository.StoreRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +15,14 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
-    public final ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    private final StoreRepository storeRepository;
+
+
+    public ProductService(ProductRepository productRepository, StoreRepository storeRepository) {
         this.productRepository = productRepository;
+        this.storeRepository = storeRepository;
     }
 
     public List<ProductDto> getAllProducts() {
@@ -29,5 +36,15 @@ public class ProductService {
         return productRepository.findById(productId)
                 .map(p -> p.toDto())
                 .orElseThrow(() -> new ProductNotFoundException(productId));
+    }
+
+    public ProductDto saveProduct(ProductDto productDto) {
+        Store store = storeRepository.findByName(productDto.getStoreName())
+                .orElseThrow(() -> new ProductBadRequestException("Could not found store " + productDto.getStoreName()));
+
+        Product product = productDto.toEntity();
+        product.setStore(store);
+
+        return productRepository.save(product).toDto();
     }
 }

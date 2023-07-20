@@ -27,4 +27,9 @@ public class ProductController {
     public ProductDto getProductById(@PathVariable Integer productId) {
         return productService.getProductById(productId);
     }
+
+    @PostMapping
+    public ProductDto saveProduct(@Valid @RequestBody ProductDto product) {
+        return productService.saveProduct(product);
+    }
 }
