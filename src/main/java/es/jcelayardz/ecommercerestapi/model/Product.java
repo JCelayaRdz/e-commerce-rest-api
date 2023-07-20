@@ -12,7 +12,6 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productid", nullable = false, unique = true)
-    @NotNull
     private Integer productId;
 
     @Column(nullable = false, length = 30)
