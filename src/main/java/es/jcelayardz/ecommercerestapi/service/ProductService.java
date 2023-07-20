@@ -24,4 +24,10 @@ public class ProductService {
                 .map(p -> p.toDto())
                 .collect(Collectors.toList());
     }
+
+    public ProductDto getProductById(Integer productId) {
+        return productRepository.findById(productId)
+                .map(p -> p.toDto())
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+    }
 }
