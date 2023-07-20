@@ -1,5 +1,6 @@
 package es.jcelayardz.ecommercerestapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -34,6 +35,7 @@ public class Product {
             CascadeType.DETACH
     }, optional = false)
     @JoinColumn(name = "storename", referencedColumnName = "name")
+    @JsonIgnore
     private Store store;
 
     public Product() {

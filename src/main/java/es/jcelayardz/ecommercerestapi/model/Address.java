@@ -1,5 +1,6 @@
 package es.jcelayardz.ecommercerestapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -41,6 +42,7 @@ public class Address {
             CascadeType.DETACH
     }, optional = false)
     @JoinColumn(name = "customerusername", referencedColumnName = "username")
+    @JsonIgnore
     private Customer customer;
 
     public Address() {

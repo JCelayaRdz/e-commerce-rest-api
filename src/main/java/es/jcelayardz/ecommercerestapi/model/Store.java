@@ -1,5 +1,6 @@
 package es.jcelayardz.ecommercerestapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -20,6 +21,7 @@ public class Store {
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "adminusername", referencedColumnName = "username")
+    @JsonIgnore
     private Admin admin;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
