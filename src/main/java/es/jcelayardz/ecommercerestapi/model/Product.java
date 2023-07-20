@@ -1,6 +1,7 @@
 package es.jcelayardz.ecommercerestapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import es.jcelayardz.ecommercerestapi.dto.ProductDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -93,6 +94,16 @@ public class Product {
 
     public void setStore(Store store) {
         this.store = store;
+    }
+
+    public ProductDto toDto() {
+        return new ProductDto(
+                this.productId,
+                this.name,
+                this.price,
+                this.description,
+                this.store.getName()
+        );
     }
 
     @Override
