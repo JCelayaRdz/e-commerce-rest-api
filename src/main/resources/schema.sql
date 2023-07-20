@@ -1,8 +1,8 @@
-CREATE SCHEMA `e-commerce-rest-api`;
+CREATE SCHEMA IF NOT EXISTS `e-commerce-rest-api`;
 
 USE `e-commerce-rest-api`;
 
-CREATE TABLE `admin`
+CREATE TABLE IF NOT EXISTS `admin`
 (
     username  VARCHAR(25) UNIQUE NOT NULL,
     email     VARCHAR(50) UNIQUE NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE `admin`
     PRIMARY KEY (username)
 );
 
-CREATE TABLE `store`
+CREATE TABLE IF NOT EXISTS `store`
 (
     name          VARCHAR(40) UNIQUE NOT NULL,
     description   VARCHAR(200),
@@ -22,20 +22,20 @@ CREATE TABLE `store`
     PRIMARY KEY (name)
 );
 
-CREATE TABLE `product`
+CREATE TABLE IF NOT EXISTS `product`
 (
     productId   INT UNIQUE  NOT NULL AUTO_INCREMENT,
     name        VARCHAR(30) NOT NULL,
     price       DECIMAL(8, 2) UNSIGNED NOT NULL,
     description VARCHAR(100),
-    isVisible   BOOLEAN     NOT NULL DEFAULT 1,
+    isVisible   TINYINT     NOT NULL DEFAULT 1,
     storeName   VARCHAR(40) NOT NULL,
     FOREIGN KEY (storeName) REFERENCES `store` (name),
     PRIMARY KEY (productId)
 );
 
 
-CREATE TABLE `customer`
+CREATE TABLE IF NOT EXISTS `customer`
 (
     username    VARCHAR(25) UNIQUE NOT NULL,
     email       VARCHAR(50) UNIQUE NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE `customer`
     PRIMARY KEY (username)
 );
 
-CREATE TABLE `address`
+CREATE TABLE IF NOT EXISTS `address`
 (
     addressId        INT UNIQUE  NOT NULL AUTO_INCREMENT,
     country          VARCHAR(56) NOT NULL,
@@ -54,13 +54,13 @@ CREATE TABLE `address`
     city             VARCHAR(35) NOT NULL,
     street           VARCHAR(95) NOT NULL,
     details          VARCHAR(50) NOT NULL,
-    isVisible        BOOLEAN     NOT NULL DEFAULT TRUE,
+    isVisible        TINYINT     NOT NULL DEFAULT 1,
     customerUsername VARCHAR(25) NOT NULL,
     FOREIGN KEY (customerUsername) REFERENCES `customer` (username),
     PRIMARY KEY (addressId)
 );
 
-CREATE TABLE `order`
+CREATE TABLE IF NOT EXISTS `order`
 (
     orderId          INT UNIQUE  NOT NULL AUTO_INCREMENT,
     status           VARCHAR(10) NOT NULL DEFAULT 'PENDING',
@@ -74,7 +74,7 @@ CREATE TABLE `order`
     PRIMARY KEY (orderId)
 );
 
-CREATE TABLE `product_order`
+CREATE TABLE IF NOT EXISTS `product_order`
 (
     orderId   INT NOT NULL,
     productId INT NOT NULL,
