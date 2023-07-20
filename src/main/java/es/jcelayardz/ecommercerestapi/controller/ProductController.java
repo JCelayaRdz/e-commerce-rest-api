@@ -33,4 +33,10 @@ public class ProductController {
     public ProductDto saveProduct(@Valid @RequestBody ProductDto product) {
         return productService.saveProduct(product);
     }
+
+    @PutMapping("/{productId}")
+    public ProductDto updateProduct(@PathVariable Integer productId,
+                                    @Valid @RequestBody ProductDto product) {
+        return productService.updateProduct(productId, product);
+    }
 }

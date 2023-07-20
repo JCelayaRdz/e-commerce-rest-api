@@ -47,4 +47,19 @@ public class ProductService {
 
         return productRepository.save(product).toDto();
     }
+
+    public ProductDto updateProduct(Integer productId, ProductDto productDto) {
+        // TODO: add field "isVisible" to product dto so it can be hidden
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+
+        product.setName(productDto.getName());
+        product.setPrice(productDto.getPrice());
+        if (productDto.getDescription() != null) {
+            product.setDescription(productDto.getDescription());
+        }
+        // set here the isVisible field
+
+        return productRepository.save(product).toDto();
+    }
 }
