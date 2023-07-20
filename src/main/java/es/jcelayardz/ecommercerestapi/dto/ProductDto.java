@@ -14,6 +14,14 @@ public class ProductDto {
 
     private String storeName;
 
+    public ProductDto(Integer productId, String name, Float price, String description, String storeName) {
+        this.productId = productId;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.storeName = storeName;
+    }
+
     public ProductDto(String name, Float price, String description, String storeName) {
         this.name = name;
         this.price = price;
