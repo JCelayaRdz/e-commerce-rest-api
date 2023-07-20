@@ -1,5 +1,7 @@
 package es.jcelayardz.ecommercerestapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import es.jcelayardz.ecommercerestapi.model.Product;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,7 +29,11 @@ public class ProductDto {
         this.storeName = storeName;
     }
 
-    public ProductDto(String name, Float price, String description, String storeName) {
+    @JsonCreator
+    public ProductDto(@JsonProperty String name,
+                      @JsonProperty Float price,
+                      @JsonProperty String description,
+                      @JsonProperty String storeName) {
         this.name = name;
         this.price = price;
         this.description = description;
