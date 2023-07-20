@@ -15,11 +15,11 @@ public class Store {
     @Column(length = 200)
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "isvisible", nullable = false)
     private boolean isVisible;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "adminUsername", referencedColumnName = "username")
+    @JoinColumn(name = "adminusername", referencedColumnName = "username")
     private Admin admin;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)

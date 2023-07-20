@@ -22,6 +22,7 @@ public class Customer {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
+    @Column(name = "dateofbirth")
     private Date dateOfBirth;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

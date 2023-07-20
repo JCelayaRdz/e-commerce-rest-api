@@ -16,7 +16,7 @@ public class Address {
     @Column(nullable = false, length = 56)
     private String country;
 
-    @Column(nullable = false, length = 32)
+    @Column(name = "postalcode", nullable = false, length = 32)
     private String postalCode;
 
     @Column(nullable = false, length = 35)
@@ -28,7 +28,7 @@ public class Address {
     @Column(nullable = false, length = 50)
     private String details;
 
-    @Column(nullable = false)
+    @Column(name = "isvisible", nullable = false)
     private boolean isVisible;
 
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
@@ -40,7 +40,7 @@ public class Address {
             CascadeType.REFRESH,
             CascadeType.DETACH
     }, optional = false)
-    @JoinColumn(name = "customerUsername", referencedColumnName = "username")
+    @JoinColumn(name = "customerusername", referencedColumnName = "username")
     private Customer customer;
 
     public Address() {

@@ -24,7 +24,7 @@ public class Product {
     @Column(length = 100)
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "isvisible", nullable = false)
     private boolean isVisible;
 
     @ManyToOne(cascade = {
@@ -33,7 +33,7 @@ public class Product {
             CascadeType.REFRESH,
             CascadeType.DETACH
     }, optional = false)
-    @JoinColumn(name = "storeName", referencedColumnName = "name")
+    @JoinColumn(name = "storename", referencedColumnName = "name")
     private Store store;
 
     public Product() {

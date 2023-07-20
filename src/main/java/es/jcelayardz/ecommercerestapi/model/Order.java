@@ -20,6 +20,7 @@ public class Order {
     @Column(nullable = false)
     private Date date;
 
+    @Column(name = "deliveredat")
     private Date deliveredAt;
 
     @ManyToOne(cascade = {
@@ -28,7 +29,7 @@ public class Order {
             CascadeType.REFRESH,
             CascadeType.DETACH
     }, optional = false)
-    @JoinColumn(name = "customerUsername", referencedColumnName = "username")
+    @JoinColumn(name = "customerusername", referencedColumnName = "username")
     private Customer customer;
 
     @ManyToOne(cascade = {
