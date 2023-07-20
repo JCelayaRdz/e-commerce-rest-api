@@ -16,7 +16,7 @@ public class Admin {
     private String password;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "admintype", nullable = false)
     private AdminType adminType;
 
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL)
