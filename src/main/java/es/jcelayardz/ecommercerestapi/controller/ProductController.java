@@ -1,9 +1,9 @@
 package es.jcelayardz.ecommercerestapi.controller;
 
 import es.jcelayardz.ecommercerestapi.dto.ProductDto;
-import es.jcelayardz.ecommercerestapi.model.Product;
 import es.jcelayardz.ecommercerestapi.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +29,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ProductDto saveProduct(@Valid @RequestBody ProductDto product) {
         return productService.saveProduct(product);
     }
