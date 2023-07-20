@@ -22,4 +22,9 @@ public class ProductController {
     public List<ProductDto> getAllProducts() {
         return productService.getAllProducts();
     }
+
+    @GetMapping("/{productId}")
+    public ProductDto getProductById(@PathVariable Integer productId) {
+        return productService.getProductById(productId);
+    }
 }
