@@ -74,6 +74,14 @@ public class ProductDto {
         this.storeName = storeName;
     }
 
+    public Product toEntity() {
+        return new Product(
+            this.name,
+            this.price,
+            this.description
+        );
+    }
+
     @Override
     public String toString() {
         return "ProductDto = \n{" +
