@@ -1,17 +1,22 @@
 package es.jcelayardz.ecommercerestapi.dto;
 
 import es.jcelayardz.ecommercerestapi.model.Product;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class ProductDto {
 
     private Integer productId;
 
+    @NotBlank
     private String name;
 
+    @NotNull
     private Float price;
 
     private String description;
 
+    @NotBlank
     private String storeName;
 
     public ProductDto(Integer productId, String name, Float price, String description, String storeName) {
