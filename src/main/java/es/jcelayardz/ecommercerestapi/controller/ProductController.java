@@ -39,4 +39,10 @@ public class ProductController {
                                     @Valid @RequestBody ProductDto product) {
         return productService.updateProduct(productId, product);
     }
+
+    @DeleteMapping("/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Integer productId) {
+        productService.deleteProduct(productId);
+    }
 }

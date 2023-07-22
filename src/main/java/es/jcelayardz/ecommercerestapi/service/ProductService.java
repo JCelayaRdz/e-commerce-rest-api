@@ -62,4 +62,11 @@ public class ProductService {
 
         return productRepository.save(product).toDto();
     }
+
+    public void deleteProduct(Integer productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
+
+        productRepository.delete(product);
+    }
 }
