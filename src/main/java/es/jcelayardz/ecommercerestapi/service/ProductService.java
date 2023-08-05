@@ -28,13 +28,13 @@ public class ProductService {
     public List<ProductDto> getAllProducts() {
         return productRepository.findAllVisible()
                 .stream()
-                .map(p -> p.toDto())
+                .map(Product::toDto)
                 .collect(Collectors.toList());
     }
 
     public ProductDto getProductById(Integer productId) {
         return productRepository.findById(productId)
-                .map(p -> p.toDto())
+                .map(Product::toDto)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
     }
 
@@ -49,7 +49,6 @@ public class ProductService {
     }
 
     public ProductDto updateProduct(Integer productId, ProductDto productDto) {
-        // TODO: add field "isVisible" to product dto so it can be hidden
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
@@ -58,7 +57,9 @@ public class ProductService {
         if (productDto.getDescription() != null) {
             product.setDescription(productDto.getDescription());
         }
-        // set here the isVisible field
+        if (productDto.isVisible() != null) {
+            product.setVisible(productDto.isVisible());
+        }
 
         return productRepository.save(product).toDto();
     }
