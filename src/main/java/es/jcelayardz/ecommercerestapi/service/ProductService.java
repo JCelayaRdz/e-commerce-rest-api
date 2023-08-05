@@ -28,13 +28,13 @@ public class ProductService {
     public List<ProductDto> getAllProducts() {
         return productRepository.findAllVisible()
                 .stream()
-                .map(p -> p.toDto())
+                .map(Product::toDto)
                 .collect(Collectors.toList());
     }
 
     public ProductDto getProductById(Integer productId) {
         return productRepository.findById(productId)
-                .map(p -> p.toDto())
+                .map(Product::toDto)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
     }
 
