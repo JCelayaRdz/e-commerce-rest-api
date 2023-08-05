@@ -1,6 +1,5 @@
 package es.jcelayardz.ecommercerestapi.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.jcelayardz.ecommercerestapi.dto.ProductDto;
 import es.jcelayardz.ecommercerestapi.service.ProductService;
@@ -13,22 +12,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ProductController.class)
@@ -151,22 +147,19 @@ class ProductControllerTest {
     @Test
     @DisplayName("Test update valid product")
     void testUpdateValidProduct() throws Exception {
-        ProductDto product = products.get(1);
-        product.setDescription("updated");
+        ProductDto productToUpdate = products.get(1);
+        productToUpdate.setDescription("updated");
 
-        when(productService.updateProduct(2, product))
-                .thenReturn(product);
-
-        System.out.println(productService.updateProduct(2, product));
-
-        assertEquals(productService.updateProduct(2, product), product);
+        when(productService.updateProduct(2, productToUpdate))
+                .thenReturn(productToUpdate);
 
         mockMvc.perform(put("/api/v1/products/2")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(product)))
+                .content(objectMapper.writeValueAsBytes(productToUpdate)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.description", is("Xiaomi 13 Ultra")));
+                .andExpect(jsonPath("$.name", is("Xiaomi 13 Ultra")))
+                .andExpect(jsonPath("$.description", is("updated")));
     }
 
 }
