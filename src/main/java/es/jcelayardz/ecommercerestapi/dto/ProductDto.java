@@ -21,12 +21,15 @@ public class ProductDto {
     @NotBlank
     private String storeName;
 
+    private Boolean isVisible;
+
     public ProductDto(Integer productId, String name, Float price, String description, String storeName) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.description = description;
         this.storeName = storeName;
+        this.isVisible = true;
     }
 
     @JsonCreator
@@ -38,6 +41,7 @@ public class ProductDto {
         this.price = price;
         this.description = description;
         this.storeName = storeName;
+        this.isVisible = true;
     }
 
     public Integer getProductId() {
@@ -80,6 +84,15 @@ public class ProductDto {
         this.storeName = storeName;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public Boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(Boolean visible) {
+        isVisible = visible;
+    }
+
     public Product toEntity() {
         return new Product(
             this.name,
@@ -90,12 +103,13 @@ public class ProductDto {
 
     @Override
     public String toString() {
-        return "ProductDto = \n{" +
+        return "ProductDto = {\n" +
                 "productId=" + productId +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 ", storeName='" + storeName + '\'' +
+                ", isVisible=" + isVisible +
                 "\n}";
     }
 }
