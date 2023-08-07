@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -101,6 +102,27 @@ class ProductServiceTest {
                         "Store 2"),
                 result.get(1)
         );
+    }
+
+    @Test
+    @DisplayName("Test get product by id that exists")
+    void testGetProductByIdNotVisible() {
+        when(productRepository.findById(1))
+                .thenReturn(Optional.ofNullable(products.get(0)));
+
+        ProductDto result = productService.getProductById(1);
+
+        assertNotNull(result);
+        assertEquals(
+                new ProductDto(
+                null,
+                "Xiaomi 13 Ultra",
+                1499.99f,
+                "Xiaomi 13 Ultra 12 GB + 512 GB Green",
+                "Store 1"),
+                result
+        );
+
     }
 
 }
