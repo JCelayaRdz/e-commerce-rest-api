@@ -1,6 +1,7 @@
 package es.jcelayardz.ecommercerestapi.service;
 
 import es.jcelayardz.ecommercerestapi.dto.ProductDto;
+import es.jcelayardz.ecommercerestapi.exception.ProductNotFoundException;
 import es.jcelayardz.ecommercerestapi.model.Product;
 import es.jcelayardz.ecommercerestapi.model.Store;
 import es.jcelayardz.ecommercerestapi.repository.ProductRepository;
@@ -128,5 +129,19 @@ class ProductServiceTest {
         );
 
     }
+
+    @Test
+    @DisplayName("Test get product by id that does not exist")
+    void testGetProductByIdNotExists() {
+        when(productRepository.findById(100))
+                .thenReturn(Optional.empty());
+
+        ProductNotFoundException exception = assertThrows(ProductNotFoundException.class, () -> {
+            productService.getProductById(100);
+        });
+
+        assertEquals("Could not found product with id 100",exception.getMessage());
+    }
+
 
 }
