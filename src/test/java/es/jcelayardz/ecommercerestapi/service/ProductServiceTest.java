@@ -32,6 +32,8 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
+    private List<Product> visibleProducts;
+
     private List<Product> products;
 
     private List<Store> stores;
@@ -41,6 +43,8 @@ class ProductServiceTest {
         MockitoAnnotations.openMocks(this);
 
         products = new ArrayList<>();
+
+        visibleProducts = new ArrayList<>();
 
         Store store1 = new Store("Store 1", "store 1");
 
@@ -69,25 +73,25 @@ class ProductServiceTest {
         product2.setStore(store2);
         store2.setProducts(Set.of(product2));
 
-        products.add(product1);
-        products.add(product2);
+        products.addAll(List.of(notVisible, product1, product2));
+
+        visibleProducts.addAll(List.of(product1, product2));
 
         stores = new ArrayList<>();
-
-        stores.add(store1);
-        stores.add(store2);
+        stores.addAll(List.of(store1, store2));
     }
 
     @AfterEach
     void afterEach() {
         products.clear();
+        stores.clear();
     }
 
     @Test
     @DisplayName("Test get all visible products")
     void testGetAllVisibleProducts() {
         when(productRepository.findAllVisible())
-                .thenReturn(products);
+                .thenReturn(visibleProducts);
 
         List<ProductDto> result = productService.getAllProducts();
 
@@ -108,7 +112,7 @@ class ProductServiceTest {
     @DisplayName("Test get product by id that exists")
     void testGetProductByIdNotVisible() {
         when(productRepository.findById(1))
-                .thenReturn(Optional.ofNullable(products.get(0)));
+                .thenReturn(Optional.ofNullable(visibleProducts.get(0)));
 
         ProductDto result = productService.getProductById(1);
 
