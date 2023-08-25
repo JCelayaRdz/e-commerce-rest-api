@@ -175,7 +175,7 @@ class ProductServiceTest {
     @DisplayName("Test update product that does not exist")
     void testUpdateProductNotExists() {
         when(productRepository.findById(100))
-                .thenThrow(ProductNotFoundException.class);
+                .thenReturn(Optional.empty());
 
         ProductDto productToUpdate = new ProductDto(
                 100,
@@ -189,7 +189,7 @@ class ProductServiceTest {
            productService.updateProduct(100, productToUpdate);
         });
 
-        // TODO: Check exception message
+        assertEquals("Could not found product with id 100",ex.getMessage());
     }
 
     @Test
@@ -220,11 +220,13 @@ class ProductServiceTest {
     @DisplayName("Test delete product that does not exist")
     void testDeleteProductNotExists() {
         when(productRepository.findById(50))
-                .thenThrow(ProductNotFoundException.class);
+                .thenReturn(Optional.empty());
 
-        assertThrows(ProductNotFoundException.class, () -> {
+        ProductNotFoundException ex = assertThrows(ProductNotFoundException.class, () -> {
             productService.deleteProduct(50);
         });
+
+        assertEquals("Could not found product with id 50",ex.getMessage());
     }
 
 }
