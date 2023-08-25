@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class ProductServiceTest {
 
@@ -143,5 +143,88 @@ class ProductServiceTest {
         assertEquals("Could not found product with id 100",exception.getMessage());
     }
 
+    @Test
+    @DisplayName("Test save a product")
+    void testSaveProduct() {
+        ProductDto productToSave = new ProductDto(
+                10,
+                "JBL TUNE 510BT",
+                49.99f,
+                "JBL Wireless Headphones",
+                "Store 2"
+        );
+
+        Product product = productToSave.toEntity();
+        product.setProductId(10);
+        product.setStore(stores.get(1));
+
+        when(storeRepository.findByName("Store 2"))
+                .thenReturn(Optional.ofNullable(stores.get(1)));
+
+        when(productRepository.save(product))
+                .thenReturn(product);
+
+        // TODO: Check why it returns a null object
+        ProductDto result = productService.saveProduct(productToSave);
+
+        assertEquals(productToSave, result);
+
+    }
+
+    @Test
+    @DisplayName("Test update product that does not exist")
+    void testUpdateProductNotExists() {
+        when(productRepository.findById(100))
+                .thenThrow(ProductNotFoundException.class);
+
+        ProductDto productToUpdate = new ProductDto(
+                100,
+                "Product",
+                100f,
+                "description",
+                "Store 1"
+        );
+
+        ProductNotFoundException ex = assertThrows(ProductNotFoundException.class, () -> {
+           productService.updateProduct(100, productToUpdate);
+        });
+
+        // TODO: Check exception message
+    }
+
+    @Test
+    @DisplayName("Test update product that exists")
+    void testUpdateProductExists() {
+        Product productToUpdate = visibleProducts.get(1);
+
+        ProductDto productUpdated = new ProductDto(
+                "Intel Core i5-12400F",
+                162.99f,
+                "updated",
+                "Store 2"
+        );
+
+        when(productRepository.findById(2))
+                .thenReturn(Optional.ofNullable(productToUpdate));
+
+        when(productRepository.save(productToUpdate))
+                .thenReturn(productToUpdate);
+
+        ProductDto result = productService.updateProduct(2, productUpdated);
+
+        assertEquals(productUpdated, result);
+
+    }
+
+    @Test
+    @DisplayName("Test delete product that does not exist")
+    void testDeleteProductNotExists() {
+        when(productRepository.findById(50))
+                .thenThrow(ProductNotFoundException.class);
+
+        assertThrows(ProductNotFoundException.class, () -> {
+            productService.deleteProduct(50);
+        });
+    }
 
 }
