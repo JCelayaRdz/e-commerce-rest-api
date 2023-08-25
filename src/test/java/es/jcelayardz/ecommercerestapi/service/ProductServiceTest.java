@@ -220,11 +220,13 @@ class ProductServiceTest {
     @DisplayName("Test delete product that does not exist")
     void testDeleteProductNotExists() {
         when(productRepository.findById(50))
-                .thenThrow(ProductNotFoundException.class);
+                .thenReturn(Optional.empty());
 
-        assertThrows(ProductNotFoundException.class, () -> {
+        ProductNotFoundException ex = assertThrows(ProductNotFoundException.class, () -> {
             productService.deleteProduct(50);
         });
+
+        assertEquals("Could not found product with id 50",ex.getMessage());
     }
 
 }
