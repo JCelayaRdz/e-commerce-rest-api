@@ -41,6 +41,8 @@ class ProductControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private static final String baseUrl = "/api/v1/products";
+
     @BeforeEach
     void beforeEach() {
         products = new ArrayList<>();
@@ -79,7 +81,7 @@ class ProductControllerTest {
         when(productService.getAllProducts())
                 .thenReturn(products);
 
-        mockMvc.perform(get("/api/v1/products"))
+        mockMvc.perform(get(baseUrl))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -95,7 +97,7 @@ class ProductControllerTest {
         when(productService.getProductById(1))
                 .thenReturn(products.get(0));
 
-        mockMvc.perform(get("/api/v1/products/1"))
+        mockMvc.perform(get(baseUrl + "/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -119,7 +121,7 @@ class ProductControllerTest {
         when(productService.saveProduct(product))
                 .thenReturn(product);
 
-        mockMvc.perform(post("/api/v1/products")
+        mockMvc.perform(post(baseUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(product)))
                 .andDo(print())
@@ -137,7 +139,7 @@ class ProductControllerTest {
                 "Store 100"
         );
 
-        mockMvc.perform(post("/api/v1/products")
+        mockMvc.perform(post(baseUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(product)))
                 .andDo(print())
@@ -153,13 +155,22 @@ class ProductControllerTest {
         when(productService.updateProduct(2, productToUpdate))
                 .thenReturn(productToUpdate);
 
-        mockMvc.perform(put("/api/v1/products/2")
+        mockMvc.perform(put(baseUrl + "/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(productToUpdate)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Xiaomi 13 Ultra")))
                 .andExpect(jsonPath("$.description", is("updated")));
+    }
+
+    @Test
+    @DisplayName("Test delete product")
+    void testDeleteProduct() throws Exception {
+        mockMvc.perform(delete(baseUrl + "/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
 }

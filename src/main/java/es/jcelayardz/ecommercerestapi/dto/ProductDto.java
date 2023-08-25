@@ -6,6 +6,8 @@ import es.jcelayardz.ecommercerestapi.model.Product;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Objects;
+
 public class ProductDto {
 
     private Integer productId;
@@ -99,6 +101,24 @@ public class ProductDto {
             this.price,
             this.description
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDto that = (ProductDto) o;
+        return Objects.equals(productId, that.productId) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(price, that.price) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(storeName, that.storeName) &&
+                Objects.equals(isVisible, that.isVisible);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, name, price, description, storeName, isVisible);
     }
 
     @Override
