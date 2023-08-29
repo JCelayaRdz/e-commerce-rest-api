@@ -2,6 +2,7 @@ package es.jcelayardz.ecommercerestapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import es.jcelayardz.ecommercerestapi.model.Store;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
@@ -71,6 +72,10 @@ public class StoreDto {
 
     public void setProducts(List<ProductDto> products) {
         this.products = products;
+    }
+
+    public Store toEntity() {
+        return new Store(this.name, this.description);
     }
 
     @Override
