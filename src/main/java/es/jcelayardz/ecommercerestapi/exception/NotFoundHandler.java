@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class ProductNotFoundHandler {
+public class NotFoundHandler {
 
     @ResponseBody
-    @ExceptionHandler(ProductNotFoundException.class)
+    @ExceptionHandler({
+            ProductNotFoundException.class,
+            StoreNotFoundException.class
+    })
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public HttpProblem productNotFoundHandler(ProductNotFoundException e) {
-        return new HttpProblem (
+    public HttpProblem notFoundHandler(RuntimeException e) {
+        return new HttpProblem(
                 "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404",
                 "NOT FOUND",
                 404,
