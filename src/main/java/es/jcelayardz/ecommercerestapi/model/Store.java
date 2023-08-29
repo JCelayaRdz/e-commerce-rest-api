@@ -1,9 +1,12 @@
 package es.jcelayardz.ecommercerestapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import es.jcelayardz.ecommercerestapi.dto.StoreDto;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "store")
@@ -73,6 +76,17 @@ public class Store {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public StoreDto toDto() {
+        StoreDto dto =  new StoreDto(this.name, this.description, this.admin.getUsername());
+        dto.setProducts(
+                this.products
+                        .stream()
+                        .map(Product::toDto)
+                        .collect(Collectors.toList())
+        );
+        return dto;
     }
 
     @Override
