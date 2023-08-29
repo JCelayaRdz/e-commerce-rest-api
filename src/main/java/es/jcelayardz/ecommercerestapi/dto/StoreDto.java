@@ -10,14 +10,14 @@ import java.util.List;
 
 public class StoreDto {
 
-    @NotBlank
+    @NotBlank(message = "{store.notblank}")
     private String name;
 
     private String description;
 
     private Boolean isVisible;
 
-    @NotBlank
+    @NotBlank(message = "{store.notblank}")
     private String adminUsername;
 
     private List<ProductDto> products;
