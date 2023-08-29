@@ -37,4 +37,20 @@ public class StoreService {
 
         return storeRepository.save(store).toDto();
     }
+
+    public StoreDto updateStore(String storeName, StoreDto storeDto) {
+        Store store = storeRepository.findByName(storeName)
+                .orElseThrow(() -> new StoreNotFoundException(storeName));
+
+        store.setName(storeDto.getName());
+        // Because the attributes description and isVisible are optional attributes in the DTO (could be null)
+        if (storeDto.getDescription() != null) {
+            store.setDescription(storeDto.getDescription());
+        }
+        if (storeDto.isVisible() != null) {
+            store.setVisible(storeDto.isVisible());
+        }
+
+        return storeRepository.save(store).toDto();
+    }
 }
