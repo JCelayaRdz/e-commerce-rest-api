@@ -39,6 +39,7 @@ public class ProductService {
     }
 
     public ProductDto saveProduct(ProductDto productDto) {
+        // TODO: Refactor exception constructor so it only takes the store name as argument
         Store store = storeRepository.findByName(productDto.getStoreName())
                 .orElseThrow(() -> new ProductBadRequestException("Could not found store " + productDto.getStoreName()));
 
