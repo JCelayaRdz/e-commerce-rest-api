@@ -32,4 +32,10 @@ public class StoreController {
                                 @Valid @RequestBody StoreDto storeDto) {
         return storeService.updateStore(storeName, storeDto);
     }
+
+    @DeleteMapping("/{storeName}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteStore(@PathVariable String storeName) {
+        storeService.deleteStore(storeName);
+    }
 }

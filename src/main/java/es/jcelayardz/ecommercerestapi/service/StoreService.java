@@ -53,4 +53,11 @@ public class StoreService {
 
         return storeRepository.save(store).toDto();
     }
+
+    public void deleteStore(String storeName) {
+        Store store = storeRepository.findByName(storeName)
+                .orElseThrow(() -> new StoreNotFoundException(storeName));
+
+        storeRepository.delete(store);
+    }
 }
