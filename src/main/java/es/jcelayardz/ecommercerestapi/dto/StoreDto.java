@@ -15,7 +15,7 @@ public class StoreDto {
 
     private String description;
 
-    private boolean isVisible;
+    private Boolean isVisible;
 
     @NotBlank
     private String adminUsername;
@@ -50,11 +50,11 @@ public class StoreDto {
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public boolean isVisible() {
+    public Boolean isVisible() {
         return isVisible;
     }
 
-    public void setVisible(boolean visible) {
+    public void setVisible(Boolean visible) {
         isVisible = visible;
     }
 
