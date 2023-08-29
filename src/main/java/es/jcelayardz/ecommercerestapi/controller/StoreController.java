@@ -26,4 +26,10 @@ public class StoreController {
     public StoreDto saveStore(@Valid @RequestBody StoreDto store) {
         return storeService.saveStore(store);
     }
+
+    @PutMapping("/{storeName}")
+    public StoreDto updateStore(@PathVariable String storeName,
+                                @Valid @RequestBody StoreDto storeDto) {
+        return storeService.updateStore(storeName, storeDto);
+    }
 }
