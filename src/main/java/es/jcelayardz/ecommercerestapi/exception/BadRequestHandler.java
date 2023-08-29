@@ -9,17 +9,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class ProductBadRequestHandler {
+public class BadRequestHandler {
 
     @ResponseBody
-    @ExceptionHandler(ProductBadRequestException.class)
+    @ExceptionHandler({
+            ProductBadRequestException.class,
+            StoreBadRequestException.class
+    })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public HttpProblem productBadRequestHandler(ProductBadRequestException e) {
+    public HttpProblem productBadRequestHandler(RuntimeException e) {
         return new HttpProblem (
                 "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
                 "BAD REQUEST",
