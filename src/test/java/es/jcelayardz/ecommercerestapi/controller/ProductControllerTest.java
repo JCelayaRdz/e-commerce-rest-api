@@ -2,6 +2,7 @@ package es.jcelayardz.ecommercerestapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.jcelayardz.ecommercerestapi.dto.ProductDto;
+import es.jcelayardz.ecommercerestapi.exception.ProductNotFoundException;
 import es.jcelayardz.ecommercerestapi.service.ProductService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,7 +42,7 @@ class ProductControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final String baseUrl = "/api/v1/products";
+    private static final String BASE_URL = "/api/v1/products";
 
     @BeforeEach
     void beforeEach() {
@@ -81,7 +82,7 @@ class ProductControllerTest {
         when(productService.getAllProducts())
                 .thenReturn(products);
 
-        mockMvc.perform(get(baseUrl))
+        mockMvc.perform(get(BASE_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -97,7 +98,7 @@ class ProductControllerTest {
         when(productService.getProductById(1))
                 .thenReturn(products.get(0));
 
-        mockMvc.perform(get(baseUrl + "/1"))
+        mockMvc.perform(get(BASE_URL + "/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -121,7 +122,7 @@ class ProductControllerTest {
         when(productService.saveProduct(product))
                 .thenReturn(product);
 
-        mockMvc.perform(post(baseUrl)
+        mockMvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(product)))
                 .andDo(print())
@@ -139,7 +140,7 @@ class ProductControllerTest {
                 "Store 100"
         );
 
-        mockMvc.perform(post(baseUrl)
+        mockMvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(product)))
                 .andDo(print())
@@ -155,7 +156,7 @@ class ProductControllerTest {
         when(productService.updateProduct(2, productToUpdate))
                 .thenReturn(productToUpdate);
 
-        mockMvc.perform(put(baseUrl + "/2")
+        mockMvc.perform(put(BASE_URL + "/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(productToUpdate)))
                 .andDo(print())
@@ -165,9 +166,29 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Test delete a product that does not exist")
+    void testDeleteNonExistentProduct() throws Exception {
+
+        doThrow(new ProductNotFoundException(10))
+                .when(productService)
+                .deleteProduct(10);
+
+        mockMvc.perform(delete(BASE_URL + "/10"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.type", is(Is.isA(String.class))))
+                .andExpect(jsonPath("$.title", is("NOT FOUND")))
+                .andExpect(jsonPath("$.status", is(404)))
+                .andExpect(jsonPath("$.detail", is("Could not found product with id 10")))
+                .andExpect(jsonPath("$.instance", is("about:blank")));
+
+    }
+
+    @Test
     @DisplayName("Test delete product")
     void testDeleteProduct() throws Exception {
-        mockMvc.perform(delete(baseUrl + "/1")
+        mockMvc.perform(delete(BASE_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
