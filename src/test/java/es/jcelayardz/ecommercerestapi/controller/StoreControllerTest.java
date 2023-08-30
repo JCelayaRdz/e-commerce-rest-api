@@ -14,9 +14,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.core.Is.isA;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -50,5 +51,28 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.name", is("Store 1")))
                 .andExpect(jsonPath("$.description", is("This is a store")))
                 .andExpect(jsonPath("$.adminUsername", is("admin2")));
+    }
+
+    @Test
+    @DisplayName("Test save an invalid store")
+    void testSaveInvalidStore() throws Exception {
+        StoreDto storeToSave = new StoreDto(
+                null,
+                "A store that sells technological items",
+                null
+        );
+
+        String errorMessage = "Validation errors: The name and adminUsername fields must not be empty";
+
+        mockMvc.perform(post(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(storeToSave)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.type", is(isA(String.class))))
+                .andExpect(jsonPath("$.title", is("BAD REQUEST")))
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.detail", is(errorMessage)))
+                .andExpect(jsonPath("$.instance", is("about:blank")));
     }
 }
