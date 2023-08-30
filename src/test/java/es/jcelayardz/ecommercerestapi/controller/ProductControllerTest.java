@@ -2,6 +2,7 @@ package es.jcelayardz.ecommercerestapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.jcelayardz.ecommercerestapi.dto.ProductDto;
+import es.jcelayardz.ecommercerestapi.exception.ProductNotFoundException;
 import es.jcelayardz.ecommercerestapi.service.ProductService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -162,6 +163,26 @@ class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Xiaomi 13 Ultra")))
                 .andExpect(jsonPath("$.description", is("updated")));
+    }
+
+    @Test
+    @DisplayName("Test delete a product that does not exist")
+    void testDeleteNonExistentProduct() throws Exception {
+
+        doThrow(new ProductNotFoundException(10))
+                .when(productService)
+                .deleteProduct(10);
+
+        mockMvc.perform(delete(BASE_URL + "/10"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.type", is(Is.isA(String.class))))
+                .andExpect(jsonPath("$.title", is("NOT FOUND")))
+                .andExpect(jsonPath("$.status", is(404)))
+                .andExpect(jsonPath("$.detail", is("Could not found product with id 10")))
+                .andExpect(jsonPath("$.instance", is("about:blank")));
+
     }
 
     @Test
