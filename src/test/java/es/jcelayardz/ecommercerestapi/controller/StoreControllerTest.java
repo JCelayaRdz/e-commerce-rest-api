@@ -2,6 +2,7 @@ package es.jcelayardz.ecommercerestapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.jcelayardz.ecommercerestapi.dto.StoreDto;
+import es.jcelayardz.ecommercerestapi.exception.StoreNotFoundException;
 import es.jcelayardz.ecommercerestapi.service.StoreService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -146,6 +148,27 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.name", is("Tech Store")))
                 .andExpect(jsonPath("$.description", is("A store that sells technological items")))
                 .andExpect(jsonPath("$.adminUsername", is("admin2")));
+    }
+
+    @Test
+    @DisplayName("Test delete a store that does not exist")
+    void testDeleteNonExistentStore() throws Exception {
+
+        doThrow(new StoreNotFoundException("Not Exists"))
+                .when(storeService)
+                .deleteStore("Not Exists");
+
+        String errorType = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404";
+
+        mockMvc.perform(delete(BASE_URL + "/Not Exists"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.type", is(errorType)))
+                .andExpect(jsonPath("$.title", is("NOT FOUND")))
+                .andExpect(jsonPath("$.status", is(404)))
+                .andExpect(jsonPath("$.detail", is("Could not find store with name Not Exists")))
+                .andExpect(jsonPath("$.instance", is("about:blank")));
     }
 
 }
