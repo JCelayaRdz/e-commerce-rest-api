@@ -40,7 +40,7 @@ public class ProductService {
 
     public ProductDto saveProduct(ProductDto productDto) {
         Store store = storeRepository.findByName(productDto.getStoreName())
-                .orElseThrow(() -> new ProductBadRequestException("Could not found store " + productDto.getStoreName()));
+                .orElseThrow(() -> new ProductBadRequestException(productDto.getStoreName()));
 
         Product product = productDto.toEntity();
         product.setStore(store);

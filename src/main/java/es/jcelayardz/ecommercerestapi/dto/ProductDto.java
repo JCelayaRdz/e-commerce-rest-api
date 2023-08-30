@@ -12,15 +12,15 @@ public class ProductDto {
 
     private Integer productId;
 
-    @NotBlank
+    @NotBlank(message = "{product.notblank}")
     private String name;
 
-    @NotNull
+    @NotNull(message = "{product.notnull}")
     private Float price;
 
     private String description;
 
-    @NotBlank
+    @NotBlank(message = "{product.notblank}")
     private String storeName;
 
     private Boolean isVisible;
