@@ -69,6 +69,7 @@ class StoreControllerTest {
                 .content(objectMapper.writeValueAsBytes(storeToSave)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.type", is(isA(String.class))))
                 .andExpect(jsonPath("$.title", is("BAD REQUEST")))
                 .andExpect(jsonPath("$.status", is(400)))
