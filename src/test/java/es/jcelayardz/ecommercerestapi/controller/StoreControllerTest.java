@@ -3,6 +3,7 @@ package es.jcelayardz.ecommercerestapi.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.jcelayardz.ecommercerestapi.dto.StoreDto;
 import es.jcelayardz.ecommercerestapi.service.StoreService;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -98,5 +98,30 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.name", is("Tech Store")))
                 .andExpect(jsonPath("$.description", is("A store that sells technological items")))
                 .andExpect(jsonPath("$.adminUsername", is("admin2")));
+    }
+
+    @Test
+    @DisplayName("Test update an invalid product")
+    void testUpdateInvalidProduct() throws Exception{
+        StoreDto storeToUpdated = new StoreDto(
+                "Tech Store",
+                "A store that sells technological items",
+                null
+        );
+
+        String errorType = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400";
+        String errorMessage = "Validation errors: The name and adminUsername fields must not be empty";
+
+        mockMvc.perform(put(BASE_URL + "/Store 1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(storeToUpdated)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.type", is(errorType)))
+                .andExpect(jsonPath("$.title", is("BAD REQUEST")))
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.detail", is(errorMessage)))
+                .andExpect(jsonPath("$.instance", is(Is.isA(String.class))));
     }
 }
