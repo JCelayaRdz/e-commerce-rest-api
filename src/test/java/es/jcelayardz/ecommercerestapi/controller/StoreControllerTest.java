@@ -75,4 +75,27 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.detail", is(errorMessage)))
                 .andExpect(jsonPath("$.instance", is("about:blank")));
     }
+
+    @Test
+    @DisplayName("Test save a valid product")
+    void testSaveValidProduct() throws Exception {
+        StoreDto storeToSave = new StoreDto(
+                "Tech Store",
+                "A store that sells technological items",
+                "admin2"
+        );
+
+        when(storeService.saveStore(storeToSave))
+                .thenReturn(storeToSave);
+
+        mockMvc.perform(post(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(storeToSave)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", is("Tech Store")))
+                .andExpect(jsonPath("$.description", is("A store that sells technological items")))
+                .andExpect(jsonPath("$.adminUsername", is("admin2")));
+    }
 }
