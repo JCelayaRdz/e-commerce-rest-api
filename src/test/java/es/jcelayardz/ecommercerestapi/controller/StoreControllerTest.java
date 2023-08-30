@@ -124,4 +124,27 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.detail", is(errorMessage)))
                 .andExpect(jsonPath("$.instance", is(Is.isA(String.class))));
     }
+
+    @Test
+    @DisplayName("Test update a valid product")
+    void testUpdateValidProduct() throws Exception {
+        StoreDto storeToUpdated = new StoreDto(
+                "Tech Store",
+                "A store that sells technological items",
+                "admin2"
+        );
+
+        when(storeService.updateStore("Store 1", storeToUpdated))
+                .thenReturn(storeToUpdated);
+
+        mockMvc.perform(put(BASE_URL + "/Store 1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(storeToUpdated)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", is("Tech Store")))
+                .andExpect(jsonPath("$.description", is("A store that sells technological items")))
+                .andExpect(jsonPath("$.adminUsername", is("admin2")));
+    }
 }
