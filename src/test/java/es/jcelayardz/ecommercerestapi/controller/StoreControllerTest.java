@@ -78,7 +78,7 @@ class StoreControllerTest {
     }
 
     @Test
-    @DisplayName("Test save a valid product")
+    @DisplayName("Test save a valid store")
     void testSaveValidProduct() throws Exception {
         StoreDto storeToSave = new StoreDto(
                 "Tech Store",
@@ -101,7 +101,7 @@ class StoreControllerTest {
     }
 
     @Test
-    @DisplayName("Test update an invalid product")
+    @DisplayName("Test update an invalid store")
     void testUpdateInvalidProduct() throws Exception{
         StoreDto storeToUpdated = new StoreDto(
                 "Tech Store",
@@ -126,7 +126,7 @@ class StoreControllerTest {
     }
 
     @Test
-    @DisplayName("Test update a valid product")
+    @DisplayName("Test update a valid store")
     void testUpdateValidProduct() throws Exception {
         StoreDto storeToUpdated = new StoreDto(
                 "Tech Store",
@@ -147,4 +147,5 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.description", is("A store that sells technological items")))
                 .andExpect(jsonPath("$.adminUsername", is("admin2")));
     }
+
 }
