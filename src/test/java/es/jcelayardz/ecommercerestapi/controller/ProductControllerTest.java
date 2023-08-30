@@ -41,7 +41,7 @@ class ProductControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final String baseUrl = "/api/v1/products";
+    private static final String BASE_URL = "/api/v1/products";
 
     @BeforeEach
     void beforeEach() {
@@ -81,7 +81,7 @@ class ProductControllerTest {
         when(productService.getAllProducts())
                 .thenReturn(products);
 
-        mockMvc.perform(get(baseUrl))
+        mockMvc.perform(get(BASE_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -97,7 +97,7 @@ class ProductControllerTest {
         when(productService.getProductById(1))
                 .thenReturn(products.get(0));
 
-        mockMvc.perform(get(baseUrl + "/1"))
+        mockMvc.perform(get(BASE_URL + "/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -121,7 +121,7 @@ class ProductControllerTest {
         when(productService.saveProduct(product))
                 .thenReturn(product);
 
-        mockMvc.perform(post(baseUrl)
+        mockMvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(product)))
                 .andDo(print())
@@ -139,7 +139,7 @@ class ProductControllerTest {
                 "Store 100"
         );
 
-        mockMvc.perform(post(baseUrl)
+        mockMvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(product)))
                 .andDo(print())
@@ -155,7 +155,7 @@ class ProductControllerTest {
         when(productService.updateProduct(2, productToUpdate))
                 .thenReturn(productToUpdate);
 
-        mockMvc.perform(put(baseUrl + "/2")
+        mockMvc.perform(put(BASE_URL + "/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(productToUpdate)))
                 .andDo(print())
@@ -167,7 +167,7 @@ class ProductControllerTest {
     @Test
     @DisplayName("Test delete product")
     void testDeleteProduct() throws Exception {
-        mockMvc.perform(delete(baseUrl + "/1")
+        mockMvc.perform(delete(BASE_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
