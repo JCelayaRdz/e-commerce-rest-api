@@ -171,4 +171,13 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.instance", is("about:blank")));
     }
 
+    @Test
+    @DisplayName("Test successful deletion of an existing store")
+    void testDeleteExistingStoreSuccessfully() throws Exception {
+        mockMvc.perform(delete(BASE_URL + "/Exists"))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$").doesNotExist());
+    }
+
 }
