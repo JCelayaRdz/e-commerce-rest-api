@@ -203,4 +203,15 @@ class StoreServiceTest {
 
         assertEquals("Could not find store with name Non Existent", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Test delete a store that does exist")
+    void testDeleteExistingStore() {
+        Store store = new Store("Existing", "A store that exists");
+
+        when(storeRepository.findByName("Existing"))
+                .thenReturn(Optional.of(store));
+
+        assertDoesNotThrow(() -> storeService.deleteStore("Existing"));
+    }
 }
