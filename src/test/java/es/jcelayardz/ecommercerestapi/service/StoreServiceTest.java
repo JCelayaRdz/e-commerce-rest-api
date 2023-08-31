@@ -139,4 +139,24 @@ class StoreServiceTest {
 
         assertEquals(storeToSave, result);
     }
+
+    @Test
+    @DisplayName("Test update an invalid store")
+    void testUpdateInvalidStore() {
+        StoreDto storeUpdated = new StoreDto (
+                "Fashion Store",
+                "A store that sells clothing items",
+                "admin1"
+        );
+
+        doThrow(new StoreNotFoundException("Store 1"))
+                .when(storeRepository)
+                .findByName("Store 1");
+
+        var exception = assertThrows(StoreNotFoundException.class, () -> {
+           storeService.updateStore("Store 1", storeUpdated);
+        });
+
+        assertEquals("Could not find store with name Store 1", exception.getMessage());
+    }
 }
