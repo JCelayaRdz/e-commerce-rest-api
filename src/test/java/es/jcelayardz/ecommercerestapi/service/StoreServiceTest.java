@@ -159,4 +159,34 @@ class StoreServiceTest {
 
         assertEquals("Could not find store with name Store 1", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Test update a valid store")
+    void testUpdateValidStore() {
+        StoreDto storeUpdated = new StoreDto (
+                "Fashion Store",
+                "A store that sells clothing items",
+                "admin1"
+        );
+        storeUpdated.setVisible(false);
+
+        Admin admin = new Admin("admin1", "admin1@gmail.com", "password", AdminType.STORE);
+
+        Store originalStore = new Store("Store 1", null);
+        originalStore.setAdmin(admin);
+
+        Store store = storeUpdated.toEntity();
+        store.setVisible(false);
+        store.setAdmin(admin);
+
+        when(storeRepository.findByName("Store 1"))
+                .thenReturn(Optional.of(originalStore));
+
+        when(storeRepository.save(store))
+                .thenReturn(store);
+
+        StoreDto result = storeService.updateStore("Store 1", storeUpdated);
+
+        assertEquals(storeUpdated, result);
+    }
 }
