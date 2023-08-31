@@ -114,4 +114,29 @@ class StoreServiceTest {
 
         assertEquals("Could not find a store admin with username admin1", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Test save a valid store")
+    void testSaveValidStore() {
+        StoreDto storeToSave = new StoreDto (
+                "Fashion Store",
+                "A store that sells clothing items",
+                "admin1"
+        );
+
+        Admin admin = new Admin("admin1", "admin1@gmail.com", "password", AdminType.STORE);
+
+        Store store = storeToSave.toEntity();
+        store.setAdmin(admin);
+
+        when(adminRepository.findStoreAdminByUsername("admin1"))
+                .thenReturn(Optional.of(admin));
+
+        when(storeRepository.save(store))
+                .thenReturn(store);
+
+        StoreDto result = storeService.saveStore(storeToSave);
+
+        assertEquals(storeToSave, result);
+    }
 }
