@@ -2,6 +2,7 @@ package es.jcelayardz.ecommercerestapi.service;
 
 import es.jcelayardz.ecommercerestapi.dto.ProductDto;
 import es.jcelayardz.ecommercerestapi.dto.StoreDto;
+import es.jcelayardz.ecommercerestapi.exception.StoreBadRequestException;
 import es.jcelayardz.ecommercerestapi.exception.StoreNotFoundException;
 import es.jcelayardz.ecommercerestapi.model.Admin;
 import es.jcelayardz.ecommercerestapi.model.AdminType;
@@ -20,7 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class StoreServiceTest {
 
@@ -92,5 +93,25 @@ class StoreServiceTest {
                 result.getProducts().get(1)
         );
 
+    }
+
+    @Test
+    @DisplayName("Test save an invalid store")
+    void testSaveInvalidStore() {
+        StoreDto storeToSave = new StoreDto (
+                "Fashion Store",
+                "A store that sells clothing items",
+                "admin1"
+        );
+
+        doThrow(new StoreBadRequestException("admin1"))
+                .when(adminRepository)
+                .findStoreAdminByUsername("admin1");
+
+        var exception = assertThrows(StoreBadRequestException.class, () -> {
+           storeService.saveStore(storeToSave);
+        });
+
+        assertEquals("Could not find a store admin with username admin1", exception.getMessage());
     }
 }
