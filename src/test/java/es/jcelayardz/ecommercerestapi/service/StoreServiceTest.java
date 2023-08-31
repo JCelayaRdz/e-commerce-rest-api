@@ -205,7 +205,7 @@ class StoreServiceTest {
     }
 
     @Test
-    @DisplayName("Test delete a store that does exist")
+    @DisplayName("Test delete a store that exists")
     void testDeleteExistingStore() {
         Store store = new Store("Existing", "A store that exists");
 
