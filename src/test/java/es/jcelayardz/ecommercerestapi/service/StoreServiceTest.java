@@ -189,4 +189,18 @@ class StoreServiceTest {
 
         assertEquals(storeUpdated, result);
     }
+
+    @Test
+    @DisplayName("Test delete a store that does not exist")
+    void testDeletNonExistentStore() {
+        doThrow(new StoreNotFoundException("Non Existent"))
+                .when(storeRepository)
+                .findByName("Non Existent");
+
+        var exception = assertThrows(StoreNotFoundException.class, () -> {
+           storeService.deleteStore("Non Existent");
+        });
+
+        assertEquals("Could not find store with name Non Existent", exception.getMessage());
+    }
 }
