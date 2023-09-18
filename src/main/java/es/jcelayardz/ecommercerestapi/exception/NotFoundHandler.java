@@ -12,7 +12,8 @@ public class NotFoundHandler {
     @ResponseBody
     @ExceptionHandler({
             ProductNotFoundException.class,
-            StoreNotFoundException.class
+            StoreNotFoundException.class,
+            AdminNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public HttpProblem notFoundHandler(RuntimeException e) {
