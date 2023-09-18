@@ -24,4 +24,11 @@ public class AdminService {
         Admin admin = adminDto.toEntity();
         return adminRepository.save(admin).toDto();
     }
+
+    public void deleteAdmin(String username) {
+        Admin admin = adminRepository.findById(username)
+                .orElseThrow(() -> new AdminNotFoundException(username));
+
+        adminRepository.delete(admin);
+    }
 }

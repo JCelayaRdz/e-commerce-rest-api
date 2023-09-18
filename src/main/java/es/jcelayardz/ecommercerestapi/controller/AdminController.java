@@ -24,4 +24,9 @@ public class AdminController {
     public AdminDto saveAdmin(@Valid @RequestBody AdminDto adminDto) {
         return adminService.saveAdmin(adminDto);
     }
+
+    @DeleteMapping("/{username}")
+    public void deleteAdmin(@PathVariable String username) {
+        adminService.deleteAdmin(username);
+    }
 }
