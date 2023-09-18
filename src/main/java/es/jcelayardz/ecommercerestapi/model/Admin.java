@@ -1,5 +1,6 @@
 package es.jcelayardz.ecommercerestapi.model;
 
+import es.jcelayardz.ecommercerestapi.dto.AdminDto;
 import jakarta.persistence.*;
 
 @Entity
@@ -70,6 +71,17 @@ public class Admin {
 
     public void setStore(Store store) {
         this.store = store;
+    }
+
+    public AdminDto toDto() {
+        AdminDto dto =  new AdminDto(
+                this.username,
+                this.email,
+                this.password,
+                this.adminType
+        );
+        dto.setStore(this.store.toDto());
+        return dto;
     }
 
     @Override
