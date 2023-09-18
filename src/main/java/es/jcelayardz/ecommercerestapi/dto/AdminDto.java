@@ -1,5 +1,6 @@
 package es.jcelayardz.ecommercerestapi.dto;
 
+import es.jcelayardz.ecommercerestapi.model.Admin;
 import es.jcelayardz.ecommercerestapi.model.AdminType;
 import jakarta.validation.constraints.NotBlank;
 
@@ -64,6 +65,15 @@ public class AdminDto {
 
     public void setStore(StoreDto store) {
         this.store = store;
+    }
+
+    public Admin toEntity() {
+        return new Admin (
+                this.username,
+                this.email,
+                this.password,
+                this.adminType
+        );
     }
 
     @Override
