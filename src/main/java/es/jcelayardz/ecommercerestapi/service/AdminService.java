@@ -19,4 +19,9 @@ public class AdminService {
                 .orElseThrow(() -> new AdminNotFoundException(username));
 
     }
+
+    public AdminDto saveAdmin(AdminDto adminDto) {
+        Admin admin = adminDto.toEntity();
+        return adminRepository.save(admin).toDto();
+    }
 }
