@@ -1,15 +1,20 @@
 package es.jcelayardz.ecommercerestapi.dto;
 
 import es.jcelayardz.ecommercerestapi.model.AdminType;
+import jakarta.validation.constraints.NotBlank;
 
 public class AdminDto {
 
+    @NotBlank(message = "{admin.notblank}")
     private String username;
 
+    @NotBlank(message = "{admin.notblank}")
     private String email;
 
+    @NotBlank(message = "{admin.notblank}")
     private String password;
 
+    @NotBlank(message = "{admin.admintype}")
     private AdminType adminType;
 
     private StoreDto store;
