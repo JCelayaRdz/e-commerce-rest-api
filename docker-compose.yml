@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: e-commerce-rest-api
+    build: .
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    networks:
+      - api-network
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_HOST: database
+    secrets:
+      - db_username
+      - db_password
+
+  database:
+    container_name: mysql-server
+    image: mysql:8.1.0
+    ports:
+      - 3306:3306
+    restart: always
+    volumes:
+      - api-data:/var/lib/mysql
+    networks:
+      - api-network
+    environment:
+      MYSQL_DATABASE: e-commerce-rest-api
+      MYSQL_USER: user
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+
+    secrets:
+      - db_username
+      - db_password
+
+volumes:
+  api-data:
+
+networks:
+  api-network:
+    driver: bridge
+
+secrets:
+  db_username:
+    file: db_username.txt
+
+  db_password:
+    file: db_password.txt
